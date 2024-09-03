@@ -1,6 +1,4 @@
-Sistema bancario com as operacões: sacar, depositar e visalizar extrato.
-
-Bem Vindo Bank
+### Bem Vindo Bank ###
 O Bem Vindo Bank é um sistema bancário simples desenvolvido como parte do bootcamp da DIO em parceria com a NTT Data. Este projeto tem como objetivo proporcionar uma experiência prática com a linguagem Python, implementando funcionalidades básicas de um sistema bancário.
 
 Funcionalidades
