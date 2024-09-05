@@ -1,12 +1,13 @@
-# operations.py
-
-# Variáveis globais para armazenar os dados
+from datetime import date, datetime, timedelta, timezone
+# Variáveis globais 
 depositos = []
 saques = []
 saldo = 0.0
-saque_diario_max = 3  # Número máximo de saques diários permitido
-saque_diario = saque_diario_max # Inicialmente, o número de saques disponíveis é igual ao máximo
-espaco = "_ _ _ _ _ _ __ _ _"
+saque_diario_max = 10  # Número máximo de saques diários permitido
+saque_diario = saque_diario_max # Inicialmente, o número de saque é igual ao máximo
+espaco = " ___________ "
+ultima_data_saque = datetime.now().date()# Inicializa com a data atual
+
 
 def depositar(valor):
     """Realiza um depósito na conta e atualiza o saldo."""
@@ -18,10 +19,15 @@ def depositar(valor):
     else:
         print("Valor inválido para depósito.")
 
-def sacar(valor):
-    """Realiza um saque da conta, respeitando o limite diário e o valor máximo."""
-    global saldo, saque_diario
-    if saque_diario <= 0:
+def sacar(valor):# saque da conta, respeitando o limite diário, data e o valor máximo
+    global saldo, saque_diario, ultima_data_saque
+    data_atual = datetime.now().date()
+
+    if data_atual != ultima_data_saque:
+        saque_diario = saque_diario_max
+        ultima_data_saque = data_atual
+
+    if saque_diario <= 0 :
         print("Saque diário excedido.")
         return
     if valor > 500.00:
@@ -40,18 +46,22 @@ def sacar(valor):
 
 def extrato():
     #Exibe o extrato da conta, incluindo o número de saques realizados e o total de depósitos
+    data_atual = datetime.now().strftime("%d / %m / %y  %H : %M")
     if not depositos and not saques:
         print("\nNão foram realizadas movimentações.")
         return
 
     print("\n### Extrato ###\n")
+    print(f"\nSaldo:{espaco}R${saldo:.2f}{espaco}{data_atual}\n")
     for deposito in depositos:
-        print(f"Depósito:{espaco}R$ {deposito:.2f}")
+        print(f"Depósito:{espaco}R$ {deposito:.2f} #{data_atual}")
     for saque in saques:
-        print(f"\nSaque:{espaco}R$ {saque:.2f}")
+        print(f"\nSaque:{espaco}R$ {saque:.2f} #{data_atual}")
 
     saques_realizados = saque_diario_max - saque_diario
     movimentacoes = len(depositos) + saques_realizados
-    print(f"\nSaldo atual: R${espaco} {saldo:.2f}\n")
     print(f"Total de movimentações:{espaco} {movimentacoes}\n")
     print(f"Saque diário disponivel:{espaco} {saque_diario}\n")
+
+
+
